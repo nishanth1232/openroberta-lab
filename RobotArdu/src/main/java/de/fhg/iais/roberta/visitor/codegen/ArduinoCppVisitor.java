@@ -513,17 +513,17 @@ public final class ArduinoCppVisitor extends AbstractCommonArduinoCppVisitor imp
         for ( ConfigurationComponent usedConfigurationBlock : this.configuration.getConfigurationComponentsValues() ) {
             switch ( usedConfigurationBlock.getComponentType() ) {
                 case SC.HUMIDITY:
-                    headerFiles.add("#include <DHT.h>");
+                    headerFiles.add("#include <DHT/DHT.h>");
                     break;
                 case SC.INFRARED:
                     if (!configuration.getRobotName().equals("unowifirev2")) { // TODO remove once infrared library is supported for unowifirev2
-                        headerFiles.add("#include <IRremote.h>");
+                        headerFiles.add("#include <IRremote/IRremote.h>");
                     }
                     break;
                 case SC.RFID:
                     if (!configuration.getRobotName().equals("unowifirev2")) { // TODO remove once rfid library is supported for unowifirev2
                         headerFiles.add("#include <SPI.h>");
-                        headerFiles.add("#include <MFRC522.h>");
+                        headerFiles.add("#include <MFRC522/src/MFRC522.h>");
                     }
                     break;
                 case SC.LCD:
@@ -534,14 +534,14 @@ public final class ArduinoCppVisitor extends AbstractCommonArduinoCppVisitor imp
                     headerFiles.add("#include <Arduino-LiquidCrystal-I2C/LiquidCrystal_I2C.h>");
                     break;
                 case SC.STEPMOTOR:
-                    headerFiles.add("#include <Stepper.h>");
+                    headerFiles.add("#include <Stepper/src/Stepper.h>");
                     break;
                 case SC.SERVOMOTOR:
-                    headerFiles.add("#include <Servo.h>");
+                    headerFiles.add("#include <Servo/src/Servo.h>");
                     break;
                 case SC.GYRO:
                 case SC.ACCELEROMETER:
-                    headerFiles.add("#include <SparkFunLSM6DS3.h>");
+                    headerFiles.add("#include <SparkFun_LSM6DS3_Breakout/src/SparkFunLSM6DS3.h>");
                     break;
                 case SC.ULTRASONIC:
                 case SC.MOTION:
