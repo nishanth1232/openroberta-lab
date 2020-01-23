@@ -11,6 +11,7 @@ import de.fhg.iais.roberta.components.Project;
 import de.fhg.iais.roberta.util.Key;
 import de.fhg.iais.roberta.util.Pair;
 import de.fhg.iais.roberta.util.Util;
+import de.fhg.iais.roberta.util.dbc.DbcException;
 import de.fhg.iais.roberta.worker.IWorker;
 
 public class GccCompilerWorker implements IWorker {
@@ -30,15 +31,33 @@ public class GccCompilerWorker implements IWorker {
 
         String boardVariant;
         String mmcu;
-        if ( project.getRobot().equals("uno") || project.getRobot().equals("nano") ) {
-            boardVariant = "standard";
-            mmcu = "atmega328p";
-        } else {
-            boardVariant = "mega";
-            mmcu = "atmega2560";
+        String arduinoVariant;
+        String arduinoArch;
+
+        switch ( project.getRobot() ) {
+            case "uno":
+            case "nano":
+                boardVariant = "standard";
+                mmcu = "atmega328p";
+                arduinoVariant = "ARDUINO_AVR_" + project.getRobot().toUpperCase();
+                arduinoArch = "ARDUINO_ARCH_AVR";
+                break;
+            case "unowifirev2":
+                boardVariant = "";
+                mmcu = "atmega4809";
+                arduinoVariant = "ARDUINO_AVR_UNO_WIFI_REV2";
+                arduinoArch = "ARDUINO_ARCH_MEGAAVR -DUNO_WIFI_REV2_328MODE -DMILLIS_USE_TIMERB3";
+                break;
+            case "mega":
+                boardVariant = "mega";
+                mmcu = "atmega2560";
+                arduinoVariant = "ARDUINO_AVR_" + project.getRobot().toUpperCase();
+                arduinoArch = "ARDUINO_ARCH_MEGAAVR";
+                break;
+            default:
+                throw new DbcException("Unsupported Arduino type");
         }
 
-        String arduinoVariant = "ARDUINO_AVR_" + project.getRobot().toUpperCase();
         String buildDir = tempDir + token + "/" + programName + "/source";
         String arduinoDirName = project.getRobot();
 
@@ -51,7 +70,8 @@ public class GccCompilerWorker implements IWorker {
                 buildDir,
                 programName,
                 compilerResourcesDir,
-                arduinoDirName
+                arduinoDirName,
+                arduinoArch
             };
         Pair<Boolean, String> result = AbstractCompilerWorkflow.runCrossCompiler(executableWithParameters);
         Key resultKey = result.getFirst() ? Key.COMPILERWORKFLOW_SUCCESS : Key.COMPILERWORKFLOW_ERROR_PROGRAM_COMPILE_FAILED;
