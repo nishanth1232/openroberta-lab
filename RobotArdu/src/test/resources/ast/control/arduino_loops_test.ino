@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 #include <math.h>
-#include <ArduinoSTL.h>
+#include <ArduinoSTL/src/ArduinoSTL.h>
 #include <list>
 #include <RobertaFunctions/NEPODefs.h>
 
