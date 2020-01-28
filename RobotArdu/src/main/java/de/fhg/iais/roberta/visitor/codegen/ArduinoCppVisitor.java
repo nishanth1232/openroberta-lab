@@ -330,7 +330,7 @@ public final class ArduinoCppVisitor extends AbstractCommonArduinoCppVisitor imp
 
     @Override
     public Void visitRfidSensor(RfidSensor<Void> rfidSensor) {
-        if (!configuration.getRobotName().equals("unowifirev2")) { // TODO remove once rfid library is supported for unowifirev2
+        if ( !configuration.getRobotName().equals("unowifirev2") ) { // TODO remove once rfid library is supported for unowifirev2
             switch ( rfidSensor.getMode() ) {
                 case SC.PRESENCE:
                     this.sb.append("_mfrc522_" + rfidSensor.getPort() + ".PICC_IsNewCardPresent()");
@@ -401,7 +401,7 @@ public final class ArduinoCppVisitor extends AbstractCommonArduinoCppVisitor imp
 
     @Override
     public Void visitInfraredSensor(InfraredSensor<Void> infraredSensor) {
-        if (!configuration.getRobotName().equals("unowifirev2")) { // TODO remove once infrared library is supported for unowifirev2
+        if ( !configuration.getRobotName().equals("unowifirev2") ) { // TODO remove once infrared library is supported for unowifirev2
             switch ( infraredSensor.getMode() ) {
                 case SC.PRESENCE:
                     this.sb.append("_getIRPresence(_irrecv_").append(infraredSensor.getPort()).append(")");
@@ -452,12 +452,9 @@ public final class ArduinoCppVisitor extends AbstractCommonArduinoCppVisitor imp
         if ( (this.configuration.getConfigurationComponents().isEmpty() || this.usedHardwareBean.isSensorUsed(SC.TIMER)) && numberConf == 0 ) {
             nlIndent();
         }
-        generateUserDefinedMethods();
-        if ( numberConf != 0 ) {
-            nlIndent();
-        }
+
         for ( UsedSensor usedSensor : this.usedHardwareBean.getUsedSensors() ) {
-            if ( usedSensor.getType().equals(SC.INFRARED) && !configuration.getRobotName().equals("unowifirev2")) { // TODO remove once infrared library is supported for unowifirev2
+            if ( usedSensor.getType().equals(SC.INFRARED) && !configuration.getRobotName().equals("unowifirev2") ) { // TODO remove once infrared library is supported for unowifirev2
                 nlIndent();
                 createMeasureIRSensor();
                 nlIndent();
@@ -472,12 +469,18 @@ public final class ArduinoCppVisitor extends AbstractCommonArduinoCppVisitor imp
             }
         }
         for ( ConfigurationComponent usedConfigurationBlock : this.configuration.getConfigurationComponentsValues() ) {
-            if ( usedConfigurationBlock.getComponentType().equals(SC.RFID) && !configuration.getRobotName().equals("unowifirev2")) { // TODO remove once rfid library is supported for unowifirev2
+            if ( usedConfigurationBlock.getComponentType().equals(SC.RFID) && !configuration.getRobotName().equals("unowifirev2") ) { // TODO remove once rfid library is supported for unowifirev2
                 readRFIDData(usedConfigurationBlock.getUserDefinedPortName());
                 nlIndent();
                 break;
             }
         }
+
+        generateUserDefinedMethods();
+        if ( numberConf != 0 ) {
+            nlIndent();
+        }
+
         this.sb.append("void setup()");
         nlIndent();
         this.sb.append("{");
@@ -516,12 +519,12 @@ public final class ArduinoCppVisitor extends AbstractCommonArduinoCppVisitor imp
                     headerFiles.add("#include <DHT/DHT.h>");
                     break;
                 case SC.INFRARED:
-                    if (!configuration.getRobotName().equals("unowifirev2")) { // TODO remove once infrared library is supported for unowifirev2
+                    if ( !configuration.getRobotName().equals("unowifirev2") ) { // TODO remove once infrared library is supported for unowifirev2
                         headerFiles.add("#include <IRremote/IRremote.h>");
                     }
                     break;
                 case SC.RFID:
-                    if (!configuration.getRobotName().equals("unowifirev2")) { // TODO remove once rfid library is supported for unowifirev2
+                    if ( !configuration.getRobotName().equals("unowifirev2") ) { // TODO remove once rfid library is supported for unowifirev2
                         headerFiles.add("#include <SPI.h>");
                         headerFiles.add("#include <MFRC522/src/MFRC522.h>");
                     }
@@ -604,7 +607,7 @@ public final class ArduinoCppVisitor extends AbstractCommonArduinoCppVisitor imp
                 case SC.MOISTURE:
                     break;
                 case SC.INFRARED:
-                    if (!configuration.getRobotName().equals("unowifirev2")) { // TODO remove once infrared library is supported for unowifirev2
+                    if ( !configuration.getRobotName().equals("unowifirev2") ) { // TODO remove once infrared library is supported for unowifirev2
                         this.sb.append("pinMode(13, OUTPUT);");
                         nlIndent();
                         this.sb.append("_irrecv_" + usedConfigurationBlock.getUserDefinedPortName() + ".enableIRIn();");
@@ -625,7 +628,7 @@ public final class ArduinoCppVisitor extends AbstractCommonArduinoCppVisitor imp
                 case SC.PULSE:
                     break;
                 case SC.RFID:
-                    if (!configuration.getRobotName().equals("unowifirev2")) { // TODO remove once rfid library is supported for unowifirev2
+                    if ( !configuration.getRobotName().equals("unowifirev2") ) { // TODO remove once rfid library is supported for unowifirev2
                         this.sb.append("SPI.begin();");
                         nlIndent();
                         this.sb.append("_mfrc522_" + usedConfigurationBlock.getUserDefinedPortName() + ".PCD_Init();");
@@ -709,7 +712,7 @@ public final class ArduinoCppVisitor extends AbstractCommonArduinoCppVisitor imp
                     nlIndent();
                     break;
                 case SC.INFRARED:
-                    if (!configuration.getRobotName().equals("unowifirev2")) { // TODO remove once infrared library is supported for unowifirev2
+                    if ( !configuration.getRobotName().equals("unowifirev2") ) { // TODO remove once infrared library is supported for unowifirev2
                         this.sb.append("IRrecv _irrecv_").append(blockName).append("(").append(cc.getProperty("OUTPUT")).append(");");
                         nlIndent();
                     }
@@ -739,7 +742,7 @@ public final class ArduinoCppVisitor extends AbstractCommonArduinoCppVisitor imp
                     nlIndent();
                     break;
                 case SC.RFID:
-                    if (!configuration.getRobotName().equals("unowifirev2")) { // TODO remove once rfid library is supported for unowifirev2
+                    if ( !configuration.getRobotName().equals("unowifirev2") ) { // TODO remove once rfid library is supported for unowifirev2
                         this.sb.append("#define SS_PIN_" + blockName + " " + cc.getProperty("SDA"));
                         nlIndent();
                         this.sb.append("#define RST_PIN_" + blockName + " " + cc.getProperty("RST"));
