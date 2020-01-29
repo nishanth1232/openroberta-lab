@@ -43,10 +43,11 @@ public class GccCompilerWorker implements IWorker {
                 arduinoArch = "ARDUINO_ARCH_AVR";
                 break;
             case "unowifirev2":
-                boardVariant = "mega";
+                boardVariant = "uno2018";
                 mmcu = "atmega4809";
                 arduinoVariant = "ARDUINO_AVR_UNO_WIFI_REV2";
                 arduinoArch = "ARDUINO_ARCH_MEGAAVR -DUNO_WIFI_REV2_328MODE -DMILLIS_USE_TIMERB3";
+                scriptName = compilerResourcesDir + "arduino-resources/build_project_unowifirev2.sh";
                 break;
             case "mega":
                 boardVariant = "mega";
