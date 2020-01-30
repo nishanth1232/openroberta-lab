@@ -29,10 +29,10 @@ public class GccCompilerWorker implements IWorker {
         String scriptName = compilerResourcesDir + "arduino-resources/build_project.sh";
         String userProgramDirPath = tempDir + token + "/" + programName;
 
-        String boardVariant;
-        String mmcu;
-        String arduinoVariant;
-        String arduinoArch;
+        String boardVariant = "";
+        String mmcu = "";
+        String arduinoVariant = "";
+        String arduinoArch = "";
 
         switch ( project.getRobot() ) {
             case "uno":
@@ -54,6 +54,9 @@ public class GccCompilerWorker implements IWorker {
                 mmcu = "atmega2560";
                 arduinoVariant = "ARDUINO_AVR_" + project.getRobot().toUpperCase();
                 arduinoArch = "ARDUINO_ARCH_MEGAAVR";
+                break;
+            case "sensebox":
+                scriptName = compilerResourcesDir + "arduino-resources/build_project_sensebox.sh";
                 break;
             default:
                 throw new DbcException("Unsupported Arduino type");
